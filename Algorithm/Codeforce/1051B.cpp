@@ -82,5 +82,5 @@ int main()
         for (int i = 0; i < k; i++) cin >> b[i];
         cout << solve_one(a, b) << "\n";
     }
-    return 0;
+    return 1;
 }
