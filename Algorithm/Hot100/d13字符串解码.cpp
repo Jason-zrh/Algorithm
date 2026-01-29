@@ -1,61 +1,66 @@
-#include <stack>
-#include <vector>
 #include <iostream>
+#include <string>
+#include <stack>
+#include <algorithm>
 
 using namespace std;
 
-
-// 明日再战···
 string decodeString(string s)
 {
-    string ans;
-    stack<char> match; // 存符号
-    stack<char> letter; // 存字母
-    
+    stack<char> stk;
 
-    int pos = 0;
-    while(pos < s.size())
+    for (int i = 0; i < s.size(); i++)
     {
-        // 普通字母直接拼接到答案后面
-        if(isalpha(s[pos]))
-            ans.append(sizeof(s[pos]), s[pos]);
-
-        // 数字, 压栈
-        if(isdigit(s[pos]))
-            match.push(s[pos]);
-        
-        // 检测到左括号，一直将后面是字母的入栈
-        if(s[pos] == '[')
+        if (s[i] != ']')
         {
-            pos++;
-            while (isalpha(s[pos]))
-            {
-                letter.push(s[pos]);
-                pos++;
-            }
-            // 再给字母压一个0标识字母区间
-            letter.push('0');
-            continue;
+            stk.push(s[i]);
         }
-
-        // 处理一次拼接
-        if(s[pos] == ']')
+        else
         {
-            int mul = match.top() - '0';
-            match.pop(); // 弹出重复次数
-            string str;
-            letter.pop(); // 弹出'0'
-            while(!letter.empty() && isalpha(letter.top()) )
+            // 1. 获取括号内的字符串
+            string str = "";
+            while (!stk.empty() && stk.top() != '[')
             {
-                str.insert(str.begin(), letter.top());
-                letter.pop();
+                str += stk.top();
+                stk.pop();
             }
-            for(int i = 0; i < mul; i++)
-                ans.append(str);
+            stk.pop(); // 弹出 '['
+
+            // 2. 获取倍数 (可能是多位数，如 100)
+            string numStr = "";
+            while (!stk.empty() && isdigit(stk.top()))
+            {
+                numStr += stk.top();
+                stk.pop();
+            }
+            reverse(numStr.begin(), numStr.end());
+            int mul = stoi(numStr);
+
+            // 3. 构造重复字符串
+            // 注意：之前的 str 是反向出来的，这里可以先反转回来
+            reverse(str.begin(), str.end());
+            string repeated = "";
+            while (mul--)
+            {
+                repeated += str;
+            }
+
+            // 4. 将结果重新压入栈中供外层嵌套使用
+            for (char c : repeated)
+            {
+                stk.push(c);
+            }
         }
-        pos++;
     }
 
+    // 最终栈中剩下的就是解析后的结果
+    string ans = "";
+    while (!stk.empty())
+    {
+        ans += stk.top();
+        stk.pop();
+    }
+    reverse(ans.begin(), ans.end());
     return ans;
 }
 
