@@ -23,7 +23,7 @@ vector<vector<int>> levelOrder(TreeNode *root)
     queue<TreeNode* > q;
     q.push(root);
     while(!q.empty())
-    {
+    { 
         vector<int> level;
         int n = q.size(); // 记录循环次数
         for(int i = 0; i < n; i++)
@@ -38,5 +38,6 @@ vector<vector<int>> levelOrder(TreeNode *root)
         }
         ans.push_back(level);
     }
+    
     return ans;
 }
