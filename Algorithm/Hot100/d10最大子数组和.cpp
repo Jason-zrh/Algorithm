@@ -19,6 +19,22 @@ int maxSubArray(vector<int> &nums)
     return ans;
 }
 
+// 动态规划一次秒
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        int ans = INT_MIN;
+        vector<int> dp(n + 1, 0);
+        for(int i = 1; i <= n; i++)
+        {
+            dp[i] = max(dp[i - 1] + nums[i - 1], nums[i - 1]);
+            ans = max(ans, dp[i]);
+        }
+        return ans;
+    }
+};
+
 int main()
 {
     vector<int> nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
