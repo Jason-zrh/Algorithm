@@ -39,7 +39,7 @@ public:
             int len = q.size();
             for(int i = 0; i < len; i++)
             {
-                pair<int, int> pr = q.back();
+                pair<int, int> pr = q.front();
                 q.pop();
                 int x = pr.first, y = pr.second;
                 for(int k = 0; k < 4; k++)
