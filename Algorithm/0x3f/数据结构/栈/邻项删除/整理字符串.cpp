@@ -11,16 +11,16 @@ using namespace std;
 
 class Solution {
 public:
-    string removeDuplicates(string s) {
+    string makeGood(string s) {
         stack<char> st;
         for(auto& c : s) {
             if(st.empty()) {
                 st.push(c);
-            } else {
-                if((st.top() == c)) {
-                    st.pop();
-                    continue;
-                }
+                continue;
+            }
+            if(st.top() + ('a' - 'A') == c || st.top() - ('a' - 'A') == c) {
+                st.pop();
+            }else {
                 st.push(c);
             }
         }
@@ -29,7 +29,7 @@ public:
             ans += st.top();
             st.pop();
         }
-        reverse(ans.begin(), ans.end());
+        reverse(ans.begin(), ans.end()); 
         return ans;
     }
 };
